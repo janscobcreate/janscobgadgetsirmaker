@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#101d3c" />
+  <meta name="description" content="Create professional Janscob Gadgets receipts and invoices from your phone." />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="./janscob-logo.png" />
+  <title>Janscob Gadgets · Receipt Studio</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    <aside class="sidebar">
+      <div class="brand-lockup">
+        <div class="sidebar-logo-frame"><img src="./janscob-logo.png" alt="Janscob Gadgets" /></div>
+      </div>
+      <div class="sidebar-heading">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-view="create"><span class="nav-ico">▤</span><span>Create document</span></button>
+        <button class="nav-link" data-view="history"><span class="nav-ico">▥</span><span>Saved documents</span></button>
+        <button class="nav-link" data-view="settings"><span class="nav-ico">⚙</span><span>Brand settings</span></button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="sidebar-note"><span class="note-dot"></span> Ready to work offline</div>
+        <p>Beautiful documents, made for every sale.</p>
+        <div class="side-version">JANSCOB / RECEIPT STUDIO <span>v1.0</span></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="mobile-brand"><div class="mobile-logo-frame"><img src="./janscob-logo.png" alt="Janscob Gadgets" /></div></div>
+        <div class="topbar-path">WORKSPACE <span>/</span> <b id="pageBreadcrumb">CREATE DOCUMENT</b></div>
+        <div class="topbar-actions"><span class="date-label" id="todayLabel"></span><button class="top-new" id="topNew">+ New document</button></div>
+      </header>
+
+      <section id="createView" class="view active">
+        <div class="page-intro"><div><div class="eyebrow">JANSCOB GADGETS · SALES DESK</div><h1>Make every sale <em>official.</em></h1><p>Create a polished receipt or invoice in seconds, right from your phone.</p></div><div class="intro-stamp"><span>JG</span><small>YOUR BRAND.<br/>YOUR DOCUMENT.</small></div></div>
+        <div class="workspace-grid">
+          <section class="editor-card">
+            <div class="card-top"><div><div class="card-kicker">DOCUMENT EDITOR</div><h2>Document details</h2></div><span class="draft-pill"><span></span> Live preview</span></div>
+            <div class="mode-switch" role="group" aria-label="Document type"><button class="selected" type="button" data-kind="receipt">Cash receipt</button><button type="button" data-kind="invoice">Sales invoice</button></div>
+            <div class="form-section"><div class="section-heading"><span class="step-num">01</span><h3>Document & customer</h3></div>
+              <div class="form-grid two">
+                <label>Document number<input id="docNo" type="text" maxlength="35" autocomplete="off" /></label>
+                <label>Issue date<input id="docDate" type="date" /></label>
+                <label>Customer name<input id="customerName" type="text" placeholder="e.g. Chinemerem Obiora" autocomplete="name" /></label>
+                <label>Phone number<input id="customerPhone" type="tel" placeholder="e.g. 0803 123 4567" autocomplete="tel" /></label>
+              </div>
+              <div class="form-grid two invoice-only" id="invoiceFields">
+                <label>Due date<input id="dueDate" type="date" /></label>
+                <label>Customer address<input id="customerAddress" type="text" placeholder="Billing address (optional)" /></label>
+              </div>
+            </div>
+            <div class="form-section"><div class="section-heading"><span class="step-num">02</span><h3>Items sold</h3></div><p class="section-help">Add the product name and specifications to appear on the receipt.</p>
+              <div id="itemsEditor" class="item-editor-list"></div>
+              <button class="add-item" type="button" id="addItem"><span>+</span> Add another item</button>
+            </div>
+            <div class="form-section"><div class="section-heading"><span class="step-num">03</span><h3>Payment & finishing</h3></div>
+              <div class="form-grid two">
+                <label>Discount (₦)<input id="discount" type="number" min="0" step="0.01" inputmode="decimal" value="0" /></label>
+                <label>Delivery / other charges (₦)<input id="delivery" type="number" min="0" step="0.01" inputmode="decimal" value="0" /></label>
+                <label>Payment method<select id="paymentMethod"><option>Cash</option><option>Bank transfer</option><option>POS / Card</option><option>Other</option></select></label>
+                <label>Amount paid (₦)<input id="amountPaid" type="number" min="0" step="0.01" inputmode="decimal" value="0" /></label>
+              </div>
+              <label class="full-label">Additional note<textarea id="customNote" rows="2" placeholder="Optional note for the customer"></textarea></label>
+            </div>
+            <div class="editor-summary"><div><small>GRAND TOTAL</small><strong id="editorTotal">₦0.00</strong></div><div><small>BALANCE</small><strong id="editorBalance">₦0.00</strong></div></div>
+            <div class="editor-actions"><button class="button-primary" id="saveDoc">Save document <span>↗</span></button><button class="button-secondary" id="clearDoc">Reset form</button></div>
+          </section>
+
+          <section class="preview-panel" id="previewPanel"><div class="preview-toolbar"><div><span class="preview-indicator"></span><strong>Live document preview</strong><small>A4 · Print-ready</small></div><button class="zoom-button" id="expandPreview" aria-label="Expand preview">⛶ <span>Expand</span></button></div>
+            <div class="paper-stage" id="paperStage"><div class="paper" id="receiptPaper">
+              <div class="paper-watermark" id="watermark" aria-hidden="true"></div>
+              <div class="paper-inner">
+                <div class="paper-brand"><div class="paper-logo-frame"><img src="./janscob-logo.png" alt="Janscob Gadgets official logo" /></div><div class="paper-custom-business" id="paperBusiness" hidden></div><div class="paper-subline" id="paperLine1">PHONES | LAPTOPS | BLUETOOTH SPEAKERS</div><div class="paper-subline" id="paperLine2">ACCESSORIES | EXCHANGE | SMART WATCHES</div><div class="paper-contact" id="paperLocations"></div><div class="paper-contact">CONTACT US: <span id="paperPhones"></span></div></div>
+                <div class="paper-kind"><span id="paperKind">CASH RECEIPT</span></div>
+                <div class="paper-meta"><div class="meta-side"><div class="meta-line"><strong>Name:</strong><span id="paperName">—</span></div><div class="meta-line"><strong>Phone:</strong><span id="paperPhone">—</span></div></div><div class="meta-side"><div class="meta-line"><strong id="numberLabel">Receipt No:</strong><span id="paperNumber">—</span></div><div class="meta-line"><strong>Date:</strong><span id="paperDate">—</span></div></div></div>
+                <div class="paper-invoice-extra" id="paperInvoiceExtra"><div><strong>Bill to:</strong> <span id="paperAddress">—</span></div><div><strong>Due date:</strong> <span id="paperDue">—</span></div></div>
+                <div class="table-wrap"><table class="paper-table"><colgroup><col style="width:10%"/><col style="width:55%"/><col style="width:17%"/><col style="width:18%"/></colgroup><thead><tr><th>QTY</th><th>DESCRIPTION</th><th>RATE</th><th>AMOUNT</th></tr></thead><tbody id="paperItems"></tbody></table></div>
+                <div class="paper-bottom"><div class="paper-totals" id="paperTotals"></div><div class="paper-note-row"><strong id="paperTerms">PLEASE NOTE: NO REFUND AFTER PAYMENT</strong><span id="paperGrandTotal">Total&nbsp;&nbsp; ₦0</span></div><div class="paper-words"><span>Amount in words:</span> <strong id="paperWords">ZERO NAIRA ONLY</strong></div><div class="paper-extra-note" id="paperExtraNote"></div><div class="paper-signatures"><div class="signature-cell"><div class="signature-space" id="ceoSignature"></div><div class="sign-line"></div><strong>CEO Signature</strong></div><div class="signature-cell"><div class="signature-space"></div><div class="sign-line"></div><strong>Customer Signature</strong></div></div></div>
+              </div>
+            </div></div>
+            <div class="preview-actions"><button class="button-primary" id="printDoc">⬇ Print / Save PDF</button><button class="button-light" id="shareDoc">↗ Share details</button></div><p class="preview-help">Use “Save as PDF” in your phone's print menu to send the receipt on WhatsApp.</p>
+          </section>
+        </div>
+      </section>
+
+      <section id="historyView" class="view"><div class="simple-heading"><div class="eyebrow">YOUR SALES ARCHIVE</div><h1>Saved <em>documents.</em></h1><p>Open, edit, print or duplicate previous receipts and invoices.</p></div><div class="history-card"><div class="history-tools"><div class="search-wrap">⌕ <input id="historySearch" placeholder="Search customer or document number" /></div><select id="historyFilter" aria-label="Filter documents"><option value="all">All documents</option><option value="receipt">Receipts</option><option value="invoice">Invoices</option></select></div><div id="historyList" class="history-list"></div></div><div class="data-hint">Records are saved in this browser on this device. Export a backup before clearing browser data or changing phones.</div></section>
+
+      <section id="settingsView" class="view"><div class="simple-heading"><div class="eyebrow">MAKE IT YOURS</div><h1>Brand <em>settings.</em></h1><p>These details are printed on every receipt and invoice.</p></div><div class="settings-grid"><section class="settings-card"><h2>Store information</h2><p>Based on the sample receipt you provided.</p><label>Business name<input id="settingBusiness" /></label><label>Products / line 1<input id="settingLine1" /></label><label>Products / line 2<input id="settingLine2" /></label><label>Store addresses<textarea id="settingAddress" rows="3"></textarea></label><label>Contact phone numbers<input id="settingPhones" /></label><label>Receipt policy / note<textarea id="settingTerms" rows="2"></textarea></label><label>CEO signature image (optional)<input id="signatureUpload" type="file" accept="image/*" /></label><div class="signature-preview" id="signaturePreview">No signature uploaded</div><button class="button-secondary" id="removeSignature">Remove signature</button><button class="button-primary" id="saveSettings">Save brand settings</button></section><section class="settings-card backup-card"><h2>Your data, your control.</h2><p>Everything you enter stays on this phone or browser. Back up your records to move between devices.</p><div class="backup-icon">↧</div><button class="button-secondary" id="exportBackup">Export backup (.json)</button><label class="import-button" for="importBackup">Import previous backup</label><input id="importBackup" type="file" accept="application/json,.json" hidden /><div class="backup-warning"><strong>Important:</strong> Deleting browser data can erase local records. Use Export Backup regularly.</div><h2>Use it like an app</h2><p>Install Janscob Studio on your phone's home screen for quick access.</p><button class="button-primary" id="installApp">Install on phone</button></section></div></section>
+    </main>
+    <nav class="mobile-nav" aria-label="Mobile navigation"><button class="active" data-view="create"><span>▤</span>Create</button><button data-view="history"><span>▥</span>History</button><button data-view="settings"><span>⚙</span>Settings</button></nav>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <template id="itemTemplate"><div class="item-editor"><div class="item-head"><span class="item-count">ITEM 01</span><button type="button" class="delete-item" title="Remove item">× Remove</button></div><label>Product / description<textarea class="item-desc" rows="2" placeholder="e.g. HP EliteBook 1030 G2 X360&#10;Intel Core i7, 16GB RAM, 256GB SSD"></textarea></label><div class="item-controls"><label>Quantity<input class="item-qty" type="number" min="1" step="1" inputmode="numeric" value="1" /></label><label>Unit price (₦)<input class="item-rate" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" /></label><div class="item-amount"><small>AMOUNT</small><strong>₦0</strong></div></div></div></template>
+  <script src="./app.js" defer></script>
+</body>
+</html>
